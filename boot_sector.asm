@@ -1,34 +1,14 @@
-    [org 0x7c00]                   ; Load the code into memory at 0x7c00
+    [org 0x7c00]                ; Load the code into memory at 0x7c00
 
-    ;; mov al, 'H'                 ; Assign H to lower part of ax
-    ;; int 0x10                    ; Interrupt with code 0x10
-    ;; mov al, 'E'                 ; Assign H to lower part of ax
-    ;; int 0x10
-    ;; mov al, 'L'
-    ;; int 0x10
-    ;; int 0x10
-    ;; mov al, 'O'                 ; Assign H to lower part of ax
-    ;; int 0x10                    ;
-
-    mov bx, welcome
-    call print
-    mov bx, goodbye
-    call print
+    mov bx, welcome             ; Set bx to welcome string
+    call print_string           ; Print welcome
+    ;; mov dx, 0x1fb6
+    ;; call print_hex
+    mov bx, goodbye             ; Set bx to goodbye string
+    call print_string           ; Print goodbye
     jmp $                       ; Jump to current address - forever
 
-print:
-    pusha
-    mov al, [bx]
-    cmp al, 0
-    je stop
-    mov ah, 0xe                    
-    int 0x10
-    add bx, 1
-    call print
-
-stop:
-    popa
-    ret
+    %include "print.asm"
 
 welcome:
     db "Welcome to YNOS!", 0
@@ -36,7 +16,5 @@ welcome:
 goodbye:
     db "Goodbye!", 0
 
-
-    times 510-($-$$) db 0
-
-    dw 0xaa55
+    times 510-($-$$) db 0       ; Pad boot sector with 0s
+    dw 0xaa55                   ; Magic number

@@ -1,45 +1,46 @@
-;; This is not complete. 
-;; This was ripped from https://gist.github.com/kthompson/957c635d84b7813945aa9bb649f039b9
-;; It prints hex codes as they are rather than as ascii characters
-;; I think the problem is something to do with where the letter is added to the hex string
-;; I'll come back to this when it becomes a problem
-
+; receiving the data in 'dx'
+; For the examples we'll assume that we're called with dx=0x1234
 print_hex:
-    pusha                           ; save the register values to the stack for later
-    mov cx, 4                       ; Start the counter: we want to print 4 characters therefore, 16 bits
+    pusha
 
-char_loop:
-  dec cx            ; Decrement the counter
+    mov cx, 0 ; our index variable
 
-  mov ax,dx         ; copy bx into ax so we can mask it for the last chars
-  shr dx,4          ; shift bx 4 bits to the right
-  and ax,0xf        ; mask ah to get the last 4 bits
+; Strategy: get the last char of 'dx', then convert to ASCII
+; Numeric ASCII values: '0' (ASCII 0x30) to '9' (0x39), so just add 0x30 to byte N.
+; For alphabetic characters A-F: 'A' (ASCII 0x41) to 'F' (0x46) we'll add 0x40
+; Then, move the ASCII byte to the correct position on the resulting string
+hex_loop:
+    cmp cx, 4 ; loop 4 times
+    je end
 
-  mov bx, HEX_OUT   ; set bx to the memory address of our string
-  add bx, 2         ; skip the '0x'
-  add bx, cx        ; add the current counter to the address
+    ; 1. convert last char of 'dx' to ascii
+    mov ax, dx ; we will use 'ax' as our working register
+    and ax, 0x000f ; 0x1234 -> 0x0004 by masking first three to zeros
+    add al, 0x30 ; add 0x30 to N to convert it to ASCII "N"
+    cmp al, 0x39 ; if > 9, add extra 8 to represent 'A' to 'F'
+    jle step2
+    add al, 7 ; 'A' is ASCII 65 instead of 58, so 65-58=7
 
-  cmp ax,0xa        ; Check to see if it's a letter or number
-  jl set_letter     ; If it's a number, go straight to setting the value
-  add byte [bx],7   ; If it's a letter, add 7
-                    ; Why this magic number? ASCII letters start 17
-                    ; characters after decimal numbers. We need to cover that
-                    ; distance. If our value is a 'letter' it's already
-                    ; over 10, so we need to add 7 more.
-  jl set_letter
+step2:
+    ; 2. get the correct position of the string to place our ASCII char
+    ; bx <- base address + string length - index of char
+    mov bx, HEX_OUT + 5 ; base + length
+    sub bx, cx  ; our index variable
+    mov [bx], al ; copy the ASCII char on 'al' to the position pointed by 'bx'
+    ror dx, 4 ; 0x1234 -> 0x4123 -> 0x3412 -> 0x2341 -> 0x1234
 
-set_letter:
-  add byte [bx],al  ; Add the value of the byte to the char at bx
+    ; increment index and loop
+    add cx, 1
+    jmp hex_loop
 
-  cmp cx,0          ; check the counter, compare with 0
-  je print_hex_done ; if the counter is 0, finish
-  jmp char_loop     ; otherwise, loop again
+end:
+    ; prepare the parameter and call the function
+    ; remember that print receives parameters in 'bx'
+    mov bx, HEX_OUT
+    call print
 
-print_hex_done:
-  mov bx, HEX_OUT   ; print the string pointed to by bx
-  call print
+    popa
+    ret
 
-  popa              ; pop the initial register values back from the stack
-  ret               ; return the function
-
-HEX_OUT: db '0x0000', 0
+HEX_OUT:
+    db '0x0000',0 ; reserve memory for our new string

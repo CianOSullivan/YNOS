@@ -41,3 +41,5 @@ print_hex_done:
 
   popa              ; pop the initial register values back from the stack
   ret               ; return the function
+
+HEX_OUT: db '0x0000', 0

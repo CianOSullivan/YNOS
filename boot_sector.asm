@@ -1,42 +1,35 @@
 [org 0x7c00]                   ; Load the code into memory at 0x7c00
-
-    ;mov bx, welcome             
-    ;call print
-
-    ;mov dx, 0x6869             Set the value we want to print to dx
-    ;call print_hex              Print the hex value
-    ;mov bx, goodbye
-	;call print
-    mov [BOOT_DRIVE], dl
-    mov bp, 0x8000
+    mov bp, 0x9000
     mov sp, bp
+    mov bx, MSG_REAL_MODE
+    call print
 
-    mov bx, 0x9000
-    mov dh, 5
-    mov dl, [BOOT_DRIVE]
-    call disk_load
-
-    mov dx, [0x9000 + 512]
-    call print_hex
+    call switch_to_pm
     
-    mov dx, [0x9000]
-    call print_hex
-    
-    jmp $                           ; Jump to current address - forever
+    jmp $                           ; Jump to current address forever - shouldn't execute
 
 
 %include "print_string.asm"
-%include "print_hex.asm"
-%include "disk_load.asm"
+%include "gdt.asm"
+%include "print_string_pm.asm"
+%include "switch_pm.asm"
 
-BOOT_DRIVE:  db 0
 
-    ;; welcome:db "Welcome to YNOS!", 0
+[bits 32]
 
-    ;; goodbye:db "Goodbye!", 0call print
+BEGIN_PM:    ; This is where we arrive after switching to and initialising protected mode.
+
+    mov ebx , MSG_PROT_MODE
+    call print_string_pm; Use our 32 - bit print routine.
+                                
+    jmp $ ; Hang.
+
+
+
+; Global variables
+MSG_REAL_MODE db "Started in 16bit Real Mode ", 0
+MSG_PROT_MODE db "Successfully landed in 32bit Protected Mode " , 0
     
-    times 510-($-$$) db 0
-    dw 0xaa55
-    
-    times 256 dw 0xdada
-    times 256 dw 0xface    
+times 510-($-$$) db 0
+dw 0xaa55
+ 

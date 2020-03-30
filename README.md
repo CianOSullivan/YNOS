@@ -13,4 +13,5 @@ To run os:
 Good example of how to build a terminal in the kernel: https://wiki.osdev.org/Bare_Bones#Implementing_the_Kernel  
 A more fleshed out kernel: https://wiki.osdev.org/Meaty_Skeleton#Architecture_Directories  
 Good resource for interrupt handling: https://littleosbook.github.io/  
+How to keyboard input driver: https://arjunsreedharan.org/post/99370248137/kernels-201-lets-write-a-kernel-with-keyboard  
 

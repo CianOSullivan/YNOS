@@ -1,8 +1,9 @@
+#include "screen.h"
 void some_function() {
     
 }
 
 void kmain() {
-    char* video_memory = (char*) 0xb8000;
-    *video_memory = 'X';
+    clear_screen();
+    //print_at("X", 12, 12);
 }

@@ -9,6 +9,8 @@ To assemble boot sector into machine code:
 To run os:
    `$ qemu-system-x86_64 -drive format=raw,file=boot_sector.bin,index=0,if=floppy`
 
+# Resources
+Good example of how to build a terminal in the kernel: https://wiki.osdev.org/Bare_Bones#Implementing_the_Kernel  
+A more fleshed out kernel: https://wiki.osdev.org/Meaty_Skeleton#Architecture_Directories  
+Good resource for interrupt handling: https://littleosbook.github.io/  
 
-Finished base implementation of 3.5.1 so start reading from 3.6
-You got this, 3.6 is a new section, looks manageable and interestings.

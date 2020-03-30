@@ -12,6 +12,7 @@ void clear_screen();
 void print_at(char *message, int col, int row);
 void print(char *message);
 int handle_scrolling(int offset);
+void memory_copy(char* source, char* dest, int no_bytes);
 
 /* Declaration of private functions */
 void print_char(char c, int col, int row, char attr); // COMPLETE

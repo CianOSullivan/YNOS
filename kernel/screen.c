@@ -14,12 +14,12 @@ void print_char(char character, int col, int row, char attribute_byte) {
     if (col >= 0 && row >= 0) {
         offset = get_screen_offset(col, row);
     } else {
-        offset = get_cursor();
+        offset = get_cursor(); // This works
     }
 
     if (character == '\n') {
         int rows = offset / (2*MAX_COLS);
-        offset = get_screen_offset(79, rows);
+        offset = get_screen_offset(79, rows); // This works
     } else {
         vidmem[offset] = character;
         vidmem[offset+1] = attribute_byte;
@@ -41,7 +41,7 @@ void print_char(char character, int col, int row, char attribute_byte) {
 void print_at(char *message, int col, int row) {
     // Set cursor if col/row are not negative 
     if (col >= 0 && row >= 0){
-        set_cursor(get_screen_offset());
+        set_cursor(get_screen_offset(col, row));
     }
 
     // Loop through message and print it
@@ -49,6 +49,11 @@ void print_at(char *message, int col, int row) {
     while (message[i] != 0) {
         print_char(message[i++], col, row, WHITE_ON_BLACK);
     }
+}
+
+void printX() {
+    char* vid_mem = VIDEO_ADDRESS;
+    *vid_mem = 'X';
 }
 
 void print(char *message) {

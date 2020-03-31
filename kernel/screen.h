@@ -8,11 +8,11 @@
 #define REG_SCREEN_DATA 0x3D5
 
 void clear_screen();
-int get_screen_offset(int cols, int rows); //his get_offset
+//int get_screen_offset(int cols, int rows); //his get_offset
 int get_offset(int col, int row);
-int get_cursor(); // his get_cursor_offset
+int get_cursor(); // his get_cursor_offset // This is correct
 int handle_scrolling(int offset);
-void memory_copy(char* source, char* dest, int no_bytes);
+void memory_copy(char *source, char *dest, int no_bytes);
 void print(char *message);
 void printX();
 void print_at(char *message, int col, int row);

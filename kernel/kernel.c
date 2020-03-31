@@ -13,11 +13,12 @@ void some_function() {
 }
 
 void kmain() {
-    //clear_screen();
-    //print_at("X", 40, 40);
+    clear_screen();
     //printX();
     //print_char('Z', -1, -1, 0x0f); // This works - prints Z at the initial cursor position
     print_char('Z', -1, -1, 0x0f);
     print_char('Z', -1, -1, 0x0f);
+        print_at("X", 40, 40);
+
     //print_char('Z', 16, 16, 0x0f);
 }

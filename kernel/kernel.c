@@ -16,9 +16,18 @@ void kmain() {
     clear_screen();
     //printX();
     //print_char('Z', -1, -1, 0x0f); // This works - prints Z at the initial cursor position
-    print_char('Z', -1, -1, 0x0f);
-    print_char('Z', -1, -1, 0x0f);
-        print_at("X", 40, 40);
+    //print_char('Z', -1, -1, 0x0f);
+    //print_char('Z', -1, -1, 0x0f);
+    //print_char('N', 1, 12, 0x0f);
+    //print_at("X", 10, 10);
+    for (int i = 0; i < 20; i++){
+        print_at("My first kernel", 0, i);
+    }
+    //print_at("XXXX", 1, 11);
 
+    //print("My first kernel");
+
+    //print_at("My first kernel", 0, 12);
+    //print_char('!', -1, -1, 0x0f);
     //print_char('Z', 16, 16, 0x0f);
 }

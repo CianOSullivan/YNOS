@@ -2,7 +2,7 @@
 #include "ports.h"
 
 
-void print_char(char character, int col, int row, char attribute_byte) {
+int print_char(char character, int col, int row, char attribute_byte) {
     unsigned char *vidmem = (unsigned char *) VIDEO_ADDRESS;
 
     if (!attribute_byte) {
@@ -28,6 +28,7 @@ void print_char(char character, int col, int row, char attribute_byte) {
     offset += 2;
     //offset = handle_scrolling(offset);
     set_cursor(offset);
+    return offset;
 }
 
 /**********************************************************
@@ -46,14 +47,12 @@ void print_at(char *message, int col, int row) {
 
     // Loop through message and print it
     int i = 0;
+    int offset;
     while (message[i] != 0) {
-        print_char(message[i++], col, row, WHITE_ON_BLACK);
+        offset = print_char(message[i++], col, row, WHITE_ON_BLACK);
+        row = get_offset_row(offset);
+        col = get_offset_col(offset);
     }
-}
-
-void printX() {
-    char* vid_mem = VIDEO_ADDRESS;
-    *vid_mem = 'X';
 }
 
 void print(char *message) {
@@ -71,12 +70,6 @@ void clear_screen() {
     }
     set_cursor(get_offset(0, 0));
 }
-/*
-int get_screen_offset(int cols, int rows) {
-    port_byte_out(REG_SCREEN_CTRL, 14);
-    port_byte_out(REG_SCREEN_DATA, (unsigned char)(get_offset(cols, rows) >> 8));
-    port_byte_out(REG_SCREEN_CTRL, 15);
-}*/
 
 int get_cursor() {
     /* Use the VGA ports to get the current cursor position
@@ -129,3 +122,5 @@ int handle_scrolling(int cursor_offset) {
 
     return cursor_offset;
 }
+int get_offset_row(int offset) { return offset / (2 * MAX_COLS); }
+int get_offset_col(int offset) { return (offset - (get_offset_row(offset)*2*MAX_COLS))/2; }

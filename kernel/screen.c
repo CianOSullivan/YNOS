@@ -18,15 +18,16 @@ int print_char(char character, int col, int row, char attribute_byte) {
     }
 
     if (character == '\n') {
-        int rows = offset / (2*MAX_COLS);
-        offset = get_offset(0, rows); // This works
+        row = get_offset_row(offset);
+        offset = get_offset(0, row+1); // This works
     } else {
         vidmem[offset] = character;
         vidmem[offset+1] = attribute_byte;
+        offset += 2;
     }
 
-    offset += 2;
-    //offset = handle_scrolling(offset);
+    offset = handle_scrolling(offset);
+
     set_cursor(offset);
     return offset;
 }
@@ -41,13 +42,17 @@ int print_char(char character, int col, int row, char attribute_byte) {
  */
 void print_at(char *message, int col, int row) {
     // Set cursor if col/row are not negative 
-    if (col >= 0 && row >= 0){
-        set_cursor(get_offset(col, row));
+    int offset;
+    if (col >= 0 && row >= 0)
+        offset = get_offset(col, row);
+    else {
+        offset = get_cursor();
+        row = get_offset_row(offset);
+        col = get_offset_col(offset);
     }
 
     // Loop through message and print it
     int i = 0;
-    int offset;
     while (message[i] != 0) {
         offset = print_char(message[i++], col, row, WHITE_ON_BLACK);
         row = get_offset_row(offset);
@@ -67,6 +72,8 @@ void clear_screen() {
     }
     set_cursor(get_offset(0, 0));
 }
+
+/******** END PUBLIC FUNCTIONS *********/
 
 int get_cursor() {
     /* Use the VGA ports to get the current cursor position
@@ -89,7 +96,7 @@ void set_cursor(int offset) {
     port_byte_out(REG_SCREEN_DATA, (unsigned char)(offset & 0xff));
 }
 
-void memory_copy(char *source, char *dest, int no_bytes) {
+void memory_copy(char* source, char* dest, int no_bytes) {
     int i;
     for (i = 0; i < no_bytes; i++) {
         *(dest + i) = *(source + i);
@@ -97,27 +104,28 @@ void memory_copy(char *source, char *dest, int no_bytes) {
 }
 
 int get_offset(int col, int row) { return 2 * (row * MAX_COLS + col); }
-int handle_scrolling(int cursor_offset) {
-    if (cursor_offset < MAX_ROWS * MAX_COLS * 2) {
-        return cursor_offset;
+int handle_scrolling(int offset) {
+    if (offset < MAX_ROWS * MAX_COLS * 2) {
+        set_cursor(offset);
+        return offset;
     }
+    
+    /* Check if the offset is over screen size and scroll */
+    if (offset >= MAX_ROWS * MAX_COLS * 2) {
+        int i;
+        for (i = 1; i < MAX_ROWS; i++) 
+            memory_copy(get_offset(0, i) + VIDEO_ADDRESS,
+                        get_offset(0, i-1) + VIDEO_ADDRESS,
+                        MAX_COLS * 2);
 
-    int i;
-    for (i = 1; i < MAX_ROWS; i++) {
-        memory_copy(get_offset(0, i) + VIDEO_ADDRESS,
-                    get_offset(0, i-1) + VIDEO_ADDRESS,
-                    MAX_COLS*2
-            );
+        /* Blank last line */
+        char *last_line = get_offset(0, MAX_ROWS-1) + VIDEO_ADDRESS;
+        
+        for (i = 0; i < MAX_COLS * 2; i++) last_line[i] = 0;
+
+        offset -= 2 * MAX_COLS;
     }
-
-    char* last_line = get_offset(0, MAX_ROWS-1) + VIDEO_ADDRESS;
-    for (i = 0; i < MAX_COLS*2; i++) {
-        last_line[i] = 0;
-    }
-
-    cursor_offset -= 2*MAX_COLS;
-
-    return cursor_offset;
+    return offset;
 }
 int get_offset_row(int offset) { return offset / (2 * MAX_COLS); }
 int get_offset_col(int offset) { return (offset - (get_offset_row(offset)*2*MAX_COLS))/2; }

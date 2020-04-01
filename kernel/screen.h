@@ -12,7 +12,7 @@ void clear_screen();
 int get_offset(int col, int row);
 int get_cursor(); // his get_cursor_offset // This is correct
 int handle_scrolling(int offset);
-void memory_copy(char *source, char *dest, int no_bytes);
+void memory_copy(char* source, char* dest, int no_bytes);
 void print(char *message);
 void print_at(char *message, int col, int row);
 int print_char(char c, int col, int row, char attr); // COMPLETE

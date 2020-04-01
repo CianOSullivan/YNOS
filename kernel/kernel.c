@@ -15,25 +15,23 @@ void some_function() {
 
 void kmain() {
     clear_screen();
-    //printX();
-    //print_char('Z', -1, -1, 0x0f); // This works - prints Z at the initial cursor position
-    //print_char('Z', -1, -1, 0x0f);
-    //print_char('Z', -1, -1, 0x0f);
-    //print_char('N', 1, 12, 0x0f);
-    //print_at("X", 10, 10);
-    for (int i = 0; i < 25; i++){
+
+    /*
+    for (int i = 0; i < 30; i++){
         print_at("Cians first kernel", 0, i);
         //char num = i + '0';
         print(int_to_char(i));
         //print_char(num, -1, -1, 0x0f);
+    }*/
+    
+    /* Fill up the screen */
+    int i = 0;
+    for (i = 0; i < 24; i++) {
+        print_at(int_to_char(i), 0, i);
     }
-    //print_at("XXXX", 1, 11);
 
-    //print("My first kernel");
-
-    //print_at("My first kernel", 0, 12);
-    //print_char('!', -1, -1, 0x0f);
-    //print_char('Z', 16, 16, 0x0f);
+    print_at("This text forces the kernel to scroll. Row 0 will disappear. ", 60, 24);
+    print("And with this text, the kernel will scroll again, and row 1 will disappear too!");
 
 
     // TODO int to ascii function

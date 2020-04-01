@@ -1,4 +1,5 @@
 #include "screen.h"
+#include "string.h"
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
@@ -22,8 +23,9 @@ void kmain() {
     //print_at("X", 10, 10);
     for (int i = 0; i < 25; i++){
         print_at("Cians first kernel", 0, i);
-        char num = i + '0';
-        print_char(num, -1, -1, 0x0f);
+        //char num = i + '0';
+        print(int_to_char(i));
+        //print_char(num, -1, -1, 0x0f);
     }
     //print_at("XXXX", 1, 11);
 

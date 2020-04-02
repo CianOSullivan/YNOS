@@ -35,7 +35,7 @@ kernel.bin : boot/kernel_entry.o ${OBJ}
 # Clear away all generated files
 clean:
 			rm -fr *.bin *.dis *.o os-image
-			rm -fr kernel/*.o boot/*.bin drivers/*.o
+			rm -fr kernel/*.o boot/*.bin drivers/*.o cpu/*.o
 
 # Disassemble our kernel for debugging
 kernel.dis: kernel.bin

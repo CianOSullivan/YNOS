@@ -6,6 +6,8 @@
 #include "../kernel/screen.h"
 #include "../kernel/string.h"
 #include "../kernel/ports.h"
+#include "timer.h"
+#include "../kernel/keyboard.h"
 /* ISRs reserved for CPU exceptions */
 extern void isr0();
 extern void isr1();

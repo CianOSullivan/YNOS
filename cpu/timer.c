@@ -2,17 +2,13 @@
 #include "../kernel/screen.h"
 #include "../kernel/string.h"
 #include "isr.h"
+#include "../kernel/function.h"
 
 u32 tick = 0;
 
 static void timer_callback(registers_t regs) {
     tick++;
-    print("Tick: ");
-    
-    char tick_ascii[256];
-    int_to_ascii(tick, tick_ascii);
-    print(tick_ascii);
-    print("\n");
+    UNUSED(regs);
 }
 
 void init_timer(u32 freq) {

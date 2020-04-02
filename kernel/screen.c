@@ -3,7 +3,7 @@
 
 
 int print_char(char character, int col, int row, char attribute_byte) {
-    unsigned char *vidmem = (unsigned char *) VIDEO_ADDRESS;
+    u8 *vidmem = (u8*) VIDEO_ADDRESS;
 
     if (!attribute_byte) {
         attribute_byte = WHITE_ON_BLACK;
@@ -20,6 +20,9 @@ int print_char(char character, int col, int row, char attribute_byte) {
     if (character == '\n') {
         row = get_offset_row(offset);
         offset = get_offset(0, row+1); // This works
+    } else if (character == 0x08) { /* Backspace */
+        vidmem[offset] = ' ';
+        vidmem[offset+1] = attribute_byte;
     } else {
         vidmem[offset] = character;
         vidmem[offset+1] = attribute_byte;
@@ -69,6 +72,7 @@ void print_backspace() {
     int row = get_offset_row(offset);
     int col = get_offset_col(offset);
     print_char(0x08, col, row, WHITE_ON_BLACK);
+    set_cursor(offset);
 }
 
 void clear_screen() {
@@ -98,9 +102,9 @@ void set_cursor(int offset) {
     /* Similar to get_cursor_offset, but instead of reading we write data */
     offset /= 2;
     port_byte_out(REG_SCREEN_CTRL, 14);
-    port_byte_out(REG_SCREEN_DATA, (unsigned char)(offset >> 8));
+    port_byte_out(REG_SCREEN_DATA, (u8)(offset >> 8));
     port_byte_out(REG_SCREEN_CTRL, 15);
-    port_byte_out(REG_SCREEN_DATA, (unsigned char)(offset & 0xff));
+    port_byte_out(REG_SCREEN_DATA, (u8)(offset & 0xff));
 }
 
 void memory_copy(char* source, char* dest, int no_bytes) {
@@ -121,12 +125,12 @@ int handle_scrolling(int offset) {
     if (offset >= MAX_ROWS * MAX_COLS * 2) {
         int i;
         for (i = 1; i < MAX_ROWS; i++) 
-            memory_copy(get_offset(0, i) + VIDEO_ADDRESS,
-                        get_offset(0, i-1) + VIDEO_ADDRESS,
+            memory_copy((u8*)get_offset(0, i) + VIDEO_ADDRESS,
+                        (u8*)get_offset(0, i-1) + VIDEO_ADDRESS,
                         MAX_COLS * 2);
 
         /* Blank last line */
-        char *last_line = get_offset(0, MAX_ROWS-1) + VIDEO_ADDRESS;
+        char *last_line = get_offset(0, MAX_ROWS-1) + (u8*) VIDEO_ADDRESS;
         
         for (i = 0; i < MAX_COLS * 2; i++) last_line[i] = 0;
 

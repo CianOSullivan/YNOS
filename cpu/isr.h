@@ -2,7 +2,10 @@
 #define ISR_H
 
 #include "types.h"
-
+#include "idt.h"
+#include "../kernel/screen.h"
+#include "../kernel/string.h"
+#include "../kernel/ports.h"
 /* ISRs reserved for CPU exceptions */
 extern void isr0();
 extern void isr1();

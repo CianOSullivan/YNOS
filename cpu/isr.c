@@ -1,10 +1,7 @@
 #include "isr.h"
-#include "idt.h"
-#include "../kernel/screen.h"
-#include "../kernel/string.h"
-#include "../kernel/ports.h"
 
 isr_t interrupt_handlers[256];
+char* current_message = "Division by Zero";
 
 /* Can't do this with a loop because we need the address
  * of the function names */
@@ -115,11 +112,14 @@ char *exception_messages[] = {
 };
 
 void isr_handler(registers_t r) {
+    // THIS DOESNT FUCKING WORK
     print("received interrupt: ");
-    print(int_to_char(r.int_no));
+    char f[3];
+    int_to_ascii(r.int_no, f);
+    print(f);
     print("\n");
-    print("Why: ");
-    print(exception_messages[r.int_no]);
+    // WHY THE FUCK DOES THIS ALWAYS PRINT 'S'
+    print(current_message);
     print("\n");
 }
 

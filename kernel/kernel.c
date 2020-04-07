@@ -37,7 +37,7 @@ void kmain() {
     print("And with this text, the kernel will scroll again, and row 1 will disappear too!");
     */
     isr_install();
-    irq_install();
+    //irq_install();
     /* Test the interrupts */
     //asm volatile("int $2");
     //asm volatile("int $3");
@@ -48,14 +48,6 @@ void kmain() {
      * the keyboard IRQs easier */
     //init_keyboard();
     print("Type something, it will go through the kernel\nType END to halt the CPU\n> ");
+    start_shell();
 }
 
-void user_input(char *input) {
-    if (strcmp(input, "END") == 0) {
-        print("Stopping the CPU. Bye!\n");
-        asm volatile("hlt");
-    }
-    print("You said: ");
-    print(input);
-    print("\n> ");
-}

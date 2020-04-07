@@ -8,6 +8,7 @@
 #include "string.h"
 #include "kernel.h"
 #include "function.h"
+#include "shell.h"
 void init_keyboard();
 #endif // !KEYBOARD_H
 

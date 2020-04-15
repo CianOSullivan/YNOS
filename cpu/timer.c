@@ -1,5 +1,5 @@
 #include "timer.h"
-#include "../kernel/screen.h"
+#include "../drivers/screen.h"
 #include "../kernel/string.h"
 #include "isr.h"
 #include "../kernel/function.h"

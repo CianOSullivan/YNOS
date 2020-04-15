@@ -95,3 +95,33 @@ char* int_to_char(int num) {
     reverse(str);
     return str;
 }
+
+// returns true if X and Y are same
+int compare(char *X, char *Y)
+{
+	while (*X && *Y)
+	{
+		if (*X != *Y)
+			return 0;
+
+		X++;
+		Y++;
+	}
+
+	return (*Y == '\0');
+}
+
+// Function to implement strstr() function
+char* strstr(char* X, char* Y)
+{
+	while (*X != '\0')
+	{
+		if ((*X == *Y) && compare(X, Y))
+			return X;
+		X++;
+	}
+
+	return NULL;
+}
+
+// Implement strsep function

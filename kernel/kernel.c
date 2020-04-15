@@ -1,4 +1,4 @@
-#include "screen.h"
+#include "../drivers/screen.h"
 #include "string.h"
 #include "../cpu/isr.h"
 #include "../cpu/idt.h"
@@ -18,6 +18,10 @@ void some_function() {
 void kmain() {
     clear_screen();
 
+    //char *X = "Techie Delight - Coding made easy";
+	//char *Y = "Coding";
+    //char *comp = strstr(X, Y);
+	//print(comp);
     /*
     for (int i = 0; i < 30; i++){
         print_at("Cians first kernel", 0, i);

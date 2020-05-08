@@ -5,18 +5,19 @@ This is a 32-bit custom OS project built from scratch using C and assembly langu
 # Dependencies
 Running this code requires the following:
 
-    * GCC Cross Compiler - Instructions for this can be found on the [OS Dev Wiki](https://wiki.osdev.org/GCC_Cross-Compiler). The target platform is i686-elf.
-    * NASM - Assembly language used for the bootloader.
-    * QEMU - Virtual machine software used to boot the OS.
+* GCC Cross Compiler - Instructions for this can be found on the [OS Dev Wiki](https://wiki.osdev.org/GCC_Cross-Compiler). The target platform is i686-elf.
+* NASM - Assembly language used for the bootloader.
+* QEMU - Virtual machine software used to boot the OS.
+* GNU Make
 
-# Running
-To run the OS, open a terminal and enter:
+# Build Instructions
+Clone the repository:
 
 ```
-    git clone https://github.com/CianOSullivan/ProjectDelta
+git clone https://github.com/CianOSullivan/ProjectDelta
 ```
 
-Then:
+To run the OS:
 
 ```
     cd ProjectDelta

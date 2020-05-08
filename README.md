@@ -1,4 +1,4 @@
-# ProjectDelta
+# YNOS
 
 This is a 32-bit custom OS project built from scratch using C and assembly language.
 
@@ -14,15 +14,15 @@ Running this code requires the following:
 Clone the repository:
 
 ```
-git clone https://github.com/CianOSullivan/ProjectDelta
+git clone https://github.com/CianOSullivan/YNOS
 ```
 
 To run the OS:
 
 ```
-    cd ProjectDelta
-    make
-    ./ynos
+cd ProjectDelta
+make
+./ynos
 ```
 
 And the OS should be running in a QEMU window!

@@ -1,17 +1,27 @@
 # ProjectDelta
 
-Cian's custom OS project
+This is a 32-bit custom OS project built from scratch using C and assembly language.
 
-# Boot Sector
-To assemble boot sector into machine code:
-   `$ nasm boot_sector.asm -f bin -o boot_sector.bin`
+# Dependencies
+Running this code requires the following:
 
-To run os:
-   `$ qemu-system-x86_64 -drive format=raw,file=boot_sector.bin,index=0,if=floppy`
+    * GCC Cross Compiler - Instructions for this can be found on the [OS Dev Wiki](https://wiki.osdev.org/GCC_Cross-Compiler). The target platform is i686-elf.
+    * NASM - Assembly language used for the bootloader.
+    * QEMU - Virtual machine software used to boot the OS.
 
-# Resources
-Good example of how to build a terminal in the kernel: https://wiki.osdev.org/Bare_Bones#Implementing_the_Kernel  
-A more fleshed out kernel: https://wiki.osdev.org/Meaty_Skeleton#Architecture_Directories  
-Good resource for interrupt handling: https://littleosbook.github.io/  
-How to keyboard input driver: https://arjunsreedharan.org/post/99370248137/kernels-201-lets-write-a-kernel-with-keyboard  
+# Running
+To run the OS, open a terminal and enter:
 
+```
+    git clone https://github.com/CianOSullivan/ProjectDelta
+```
+
+Then:
+
+```
+    cd ProjectDelta
+    make
+    ./ynos
+```
+
+And the OS should be running in a QEMU window!

@@ -20,7 +20,7 @@ git clone https://github.com/CianOSullivan/YNOS
 To run the OS:
 
 ```
-cd ProjectDelta
+cd YNOS
 make
 ./ynos
 ```

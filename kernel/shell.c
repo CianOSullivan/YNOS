@@ -10,11 +10,18 @@ void start_shell() {
 }
 
 void user_input(char *input) {
+    argparse(input);
     if (strcmp(input, "END") == 0) {
         print("Stopping the CPU. Bye!\n");
         asm volatile("hlt");
+    } else if (strcmp(input, "HELP") == 0) {
+    	print("Displaying help.\n");
     }
     print("You said: ");
     print(input);
     print("\n> ");
+}
+
+void argparse(char *input) {
+    // Parse arguments
 }

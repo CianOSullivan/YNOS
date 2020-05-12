@@ -37,6 +37,6 @@ void kmain() {
     /* Comment out the timer IRQ handler to read
      * the keyboard IRQs easier */
     //init_keyboard();
-    print("Type something, it will go through the kernel\nType END to halt the CPU\n> ");
+    print("Welcome to YNOS!\n\nType END to halt the CPU\n> ");
     start_shell();
 }

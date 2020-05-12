@@ -7,15 +7,16 @@ void start_shell() {
     init_timer(50);
     /* IRQ1: keyboard */
     init_keyboard();
-    char s[] = "my name is this";
-    char* delm = " ";
+    //char s[] = "my name is this";
+    //char* delm = " ";
     //char newstr[100];
-    char *str = strtok(s, delm);
-    while(str){
-        print(str);
-        print("\n");
-        str = strtok(s, delm);
-    }
+    //char *str = strtok(s, delm);
+    //while(str){
+    //    print(str);
+    //    print("\n");
+    //    str = strtok(s, delm);
+    //}
+
 }
 
 void user_input(char *input) {
@@ -30,7 +31,6 @@ void user_input(char *input) {
         print("    HELP - Display this help message\n");
         print("    PAGE - Allocate more memory to the running program\n\n");
     } else if (strcmp(input, "PAGE") == 0) {
-        /* Lesson 22: Code to test kmalloc, the rest is unchanged */
         u32 phys_addr;
         u32 page = kmalloc(1000, 1, &phys_addr);
         char page_str[16] = "";
@@ -42,6 +42,20 @@ void user_input(char *input) {
         print(", physical address: ");
         print(phys_str);
         print("\n");
+    } else if (strcmp(input, "SPLIT") == 0) {
+
+        char str[] ="- This, a sample string.";
+        char * pch;
+        print("Splitting string ");
+        print(str);
+        print(" into tokens:\n");
+        pch = strtok(str," ,.-");
+        while (pch != NULL)
+        {
+            print(pch);
+            print("\n");
+            pch = strtok(NULL, " ,.-");
+        }
     }
     print("> ");
 }

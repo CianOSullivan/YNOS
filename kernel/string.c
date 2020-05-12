@@ -145,30 +145,30 @@ char* strstr(char* X, char* Y)
 }
 
 // Implement strsep function
-char* strtok(char* s, char* delm)
+char* strtok(char* str, char* delim)
 {
-    u32 phys_addr;
-    static int currIndex = 0;
-    if(!s || !delm || s[currIndex] == '\0')
-    return NULL;
-    char *W = (char *) kmalloc(sizeof(char)*100, 1, &phys_addr);
-    int i = currIndex, k = 0, j = 0;
+    static char* _buffer;
+    if(str != NULL) _buffer = str;
+    if(_buffer[0] == '\0') return NULL;
 
-    while (s[i] != '\0'){
-        j = 0;
-        while (delm[j] != '\0'){
-            if (s[i] != delm[j])
-                W[k] = s[i];
-            else goto It;
-            j++;
+    char *ret = _buffer, *b;
+    const char *d;
+
+    for(b = _buffer; *b !='\0'; b++) {
+        for(d = delim; *d != '\0'; d++) {
+            if(*b == *d) {
+                *b = '\0';
+                _buffer = b+1;
+
+                // skip the beginning delimiters
+                if(b == ret) {
+                    ret++;
+                    continue;
+                }
+                return ret;
+            }
         }
-
-        i++;
-        k++;
     }
-It:
-    W[i] = 0;
-    currIndex = i+1;
-    //Iterator = ++ptr;
-    return W;
+
+    return ret;
 }

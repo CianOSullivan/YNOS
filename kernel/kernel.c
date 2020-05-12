@@ -39,13 +39,4 @@ void kmain() {
     //init_keyboard();
     print("Welcome to YNOS!\n\nType HELP to view possible commands\n> ");
     start_shell();
-    char s[100] = "my name is khan";
-    char delm[] = " ";
-    //char newstr[100];
-    char *str = strtok(s, delm);
-    while(str){
-        print(str);
-        print("\n");
-        str = strtok(s, delm);
-    }
 }

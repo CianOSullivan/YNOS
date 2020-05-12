@@ -3,10 +3,10 @@
 int str_len(char *pointer)
 {
    int c = 0;
- 
+
    while( *(pointer + c) != '\0' )
       c++;
- 
+
    return c;
 }
 
@@ -14,20 +14,20 @@ void reverse(char *s)
 {
    int length, c;
    char *begin, *end, temp;
- 
+
    length = str_len(s);
    begin  = s;
    end    = s;
- 
+
    for (c = 0; c < length - 1; c++)
       end++;
- 
+
    for (c = 0; c < length/2; c++)
-   {        
+   {
       temp   = *end;
       *end   = *begin;
       *begin = temp;
- 
+
       begin++;
       end--;
    }
@@ -44,7 +44,7 @@ void backspace(char s[]) {
     s[len-1] = '\0';
 }
 
-/* K&R 
+/* K&R
  * Returns <0 if s1<s2, 0 if s1==s2, >0 if s1>s2 */
 int strcmp(char s1[], char s2[]) {
     int i;
@@ -96,6 +96,26 @@ char* int_to_char(int num) {
     return str;
 }
 
+void hex_to_ascii(int n, char str[]) {
+    append(str, '0');
+    append(str, 'x');
+    char zeros = 0;
+
+    s32 tmp;
+    int i;
+    for (i = 28; i > 0; i -= 4) {
+        tmp = (n >> i) & 0xF;
+        if (tmp == 0 && zeros == 0) continue;
+        zeros = 1;
+        if (tmp > 0xA) append(str, tmp - 0xA + 'a');
+        else append(str, tmp + '0');
+    }
+
+    tmp = n & 0xF;
+    if (tmp >= 0xA) append(str, tmp - 0xA + 'a');
+    else append(str, tmp + '0');
+}
+
 // returns true if X and Y are same
 int compare(char *X, char *Y)
 {
@@ -125,3 +145,30 @@ char* strstr(char* X, char* Y)
 }
 
 // Implement strsep function
+char* strtok(char* s, char* delm)
+{
+    u32 phys_addr;
+    static int currIndex = 0;
+    if(!s || !delm || s[currIndex] == '\0')
+    return NULL;
+    char *W = (char *) kmalloc(sizeof(char)*100, 1, &phys_addr);
+    int i = currIndex, k = 0, j = 0;
+
+    while (s[i] != '\0'){
+        j = 0;
+        while (delm[j] != '\0'){
+            if (s[i] != delm[j])
+                W[k] = s[i];
+            else goto It;
+            j++;
+        }
+
+        i++;
+        k++;
+    }
+It:
+    W[i] = 0;
+    currIndex = i+1;
+    //Iterator = ++ptr;
+    return W;
+}

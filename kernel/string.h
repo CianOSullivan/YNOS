@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include "../cpu/types.h"
 #include "memory.h"
+#include "../drivers/screen.h"
 void backspace(char s[]);
 void append(char s[], char n);
 int strcmp(char s1[], char s2[]);

@@ -1,5 +1,5 @@
 #include "string.h"
-
+#include <stdbool.h>
 int str_len(char *pointer)
 {
    int c = 0;
@@ -145,30 +145,61 @@ char* strstr(char* X, char* Y)
 }
 
 // Implement strsep function
-char* strtok(char* str, char* delim)
-{
-    static char* _buffer;
-    if(str != NULL) _buffer = str;
-    if(_buffer[0] == '\0') return NULL;
+char* sp = NULL; /* the start position of the string */
 
-    char *ret = _buffer, *b;
-    const char *d;
+char* strtok(char* str, char* delimiters) {
 
-    for(b = _buffer; *b !='\0'; b++) {
-        for(d = delim; *d != '\0'; d++) {
-            if(*b == *d) {
-                *b = '\0';
-                _buffer = b+1;
+    int i = 0;
+    int len = str_len(delimiters);
 
-                // skip the beginning delimiters
-                if(b == ret) {
-                    ret++;
-                    continue;
-                }
-                return ret;
+    /* check in the delimiters */
+    if(len == 0)
+        print("delimiters are empty\n");
+
+    /* if the original string has nothing left */
+    if(!str && !sp)
+        return NULL;
+
+    /* initialize the sp during the first call */
+    if(str && !sp)
+        sp = str;
+
+    /* find the start of the substring, skip delimiters */
+    char* p_start = sp;
+    while(true) {
+        for(i = 0; i < len; i ++) {
+            if(*p_start == delimiters[i]) {
+                p_start ++;
+                break;
             }
+        }
+
+        if(i == len) {
+               sp = p_start;
+               break;
         }
     }
 
-    return ret;
+    /* return NULL if nothing left */
+    if(*sp == '\0') {
+        sp = NULL;
+        return sp;
+    }
+
+    /* find the end of the substring, and
+        replace the delimiter with null */
+    while(*sp != '\0') {
+        for(i = 0; i < len; i ++) {
+            if(*sp == delimiters[i]) {
+                *sp = '\0';
+                break;
+            }
+        }
+
+        sp ++;
+        if (i < len)
+            break;
+    }
+
+    return p_start;
 }

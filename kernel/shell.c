@@ -16,7 +16,6 @@ void start_shell() {
     //    print("\n");
     //    str = strtok(s, delm);
     //}
-
 }
 
 void user_input(char *input) {
@@ -44,17 +43,17 @@ void user_input(char *input) {
         print("\n");
     } else if (strcmp(input, "SPLIT") == 0) {
 
-        char str[] ="- This, a sample string.";
-        char * pch;
+        char str[] ="This a sample string";
+        char* pch;
         print("Splitting string ");
         print(str);
         print(" into tokens:\n");
-        pch = strtok(str," ,.-");
+        pch = strtok(str," ");
         while (pch != NULL)
         {
             print(pch);
             print("\n");
-            pch = strtok(NULL, " ,.-");
+            pch = strtok(NULL, " ");
         }
     }
     print("> ");

@@ -19,7 +19,15 @@ void start_shell() {
 }
 
 void user_input(char *input) {
-    argparse(input);
+    char* inputArray[10];
+    argparse(input, inputArray);
+
+    int c = 0;
+    while (strcmp(inputArray[c], '\0') != 0) {
+      print(inputArray[c++]);
+      print("\n");
+    }
+
     if (strcmp(input, "END") == 0 || strcmp(input, "EXIT") == 0 ) {
         print("Stopping the CPU. Bye!\n");
         asm volatile("hlt");
@@ -59,6 +67,22 @@ void user_input(char *input) {
     print("> ");
 }
 
-void argparse(char *input) {
+void argparse(char *input, char* inputArray[]) {
     // Parse arguments
+    int i = 0;
+    char* pch;
+    pch = strtok(input," ");
+    inputArray[i++] = pch;
+
+    while (pch != NULL)
+    {
+        // inputArray has a size of 10
+        // Change this to accept more arguments?
+        if (i > 9) {
+            print("This input has too many arguments\n");
+            break;
+        }
+        pch = strtok(NULL, " ");
+        inputArray[i++] = pch;
+    }
 }

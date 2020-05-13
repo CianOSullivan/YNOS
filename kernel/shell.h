@@ -5,6 +5,6 @@
 #include "memory.h"
 void start_shell();
 void user_input(char *input);
-void argparse(char *input);
+void argparse(char *input, char* inputArray[]);
 
 #endif

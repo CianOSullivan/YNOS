@@ -7,15 +7,6 @@ void start_shell() {
     init_timer(50);
     /* IRQ1: keyboard */
     init_keyboard();
-    //char s[] = "my name is this";
-    //char* delm = " ";
-    //char newstr[100];
-    //char *str = strtok(s, delm);
-    //while(str){
-    //    print(str);
-    //    print("\n");
-    //    str = strtok(s, delm);
-    //}
 }
 
 void user_input(char *input) {
@@ -28,16 +19,17 @@ void user_input(char *input) {
       print("\n");
     }
 
-    if (strcmp(input, "END") == 0 || strcmp(input, "EXIT") == 0 ) {
+    if (strcmp(inputArray[0], "END") == 0 || strcmp(input, "EXIT") == 0 ) {
         print("Stopping the CPU. Bye!\n");
         asm volatile("hlt");
-    } else if (strcmp(input, "HELP") == 0) {
+    } else if (strcmp(inputArray[0], "HELP") == 0) {
     	print("Command Help\n\n");
         print("The following commands can be run:\n\n");
         print("    END or EXIT - Halt the CPU\n");
         print("    HELP - Display this help message\n");
         print("    PAGE - Allocate more memory to the running program\n\n");
-    } else if (strcmp(input, "PAGE") == 0) {
+        print("");
+    } else if (strcmp(inputArray[0], "PAGE") == 0) {
         u32 phys_addr;
         u32 page = kmalloc(1000, 1, &phys_addr);
         char page_str[16] = "";
@@ -49,8 +41,7 @@ void user_input(char *input) {
         print(", physical address: ");
         print(phys_str);
         print("\n");
-    } else if (strcmp(input, "SPLIT") == 0) {
-
+    } else if (strcmp(inputArray[0], "SPLIT") == 0) {
         char str[] ="This a sample string";
         char* pch;
         print("Splitting string ");
@@ -63,6 +54,8 @@ void user_input(char *input) {
             print("\n");
             pch = strtok(NULL, " ");
         }
+    } else if (strcmp(inputArray[0], "HEX") == 0) {
+        // run hex_to_ascii on first argument
     }
     print("> ");
 }
@@ -71,7 +64,7 @@ void argparse(char *input, char* inputArray[]) {
     // Parse arguments
     int i = 0;
     char* pch;
-    pch = strtok(input," ");
+    pch = strtok(input, " ");
     inputArray[i++] = pch;
 
     while (pch != NULL)

@@ -59,13 +59,17 @@ int strcmp(char s1[], char s2[]) {
  */
 void int_to_ascii(int n, char str[]) {
     int i, sign;
-    if ((sign = n) < 0) n = -n;
+    if ((sign = n) < 0) {
+        n = -n;
+    }
     i = 0;
     do {
         str[i++] = n % 10 + '0';
     } while ((n /= 10) > 0);
 
-    if (sign < 0) str[i++] = '-';
+    if (sign < 0){
+        str[i++] = '-';
+    }
     str[i] = '\0';
 
     reverse(str);
@@ -131,7 +135,6 @@ int compare(char *X, char *Y)
 	return (*Y == '\0');
 }
 
-// Function to implement strstr() function
 char* strstr(char* X, char* Y)
 {
 	while (*X != '\0')
@@ -144,7 +147,6 @@ char* strstr(char* X, char* Y)
 	return NULL;
 }
 
-// Implement strsep function
 char* sp = NULL; /* the start position of the string */
 
 char* strtok(char* str, char* delimiters) {

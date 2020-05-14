@@ -40,3 +40,14 @@ clean:
 # Disassemble our kernel for debugging
 kernel.dis: kernel.bin
 			ndisasm -b 32 $< > $@
+
+# Clean the documentation for YNOS
+clean_docs:
+	rm -fr docs/html
+	rm -fr docs/latex
+
+# Make the documentation for YNOS
+docs: clean_docs
+	doxygen docs/Doxyfile
+
+

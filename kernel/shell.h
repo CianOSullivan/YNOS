@@ -27,6 +27,6 @@ Still need to implement flag support
 @param input the character pointer which has been input
 @param inputArray the character array which
 */
-void argparse(char *input, char* inputArray[]);
+int argparse(char *input, char* inputArray[]);
 
 #endif

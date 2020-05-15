@@ -12,6 +12,21 @@ void some_function() {
 //Demonstrates
 }
 
+char *tochar(int i, char *p)
+{
+    if (i / 10 == 0) {
+        // No more digits.
+        *p++ = i + '0';
+        *p = '\0';
+        return p;
+    }
+
+    p = tochar(i / 10, p);
+    *p++ = i % 10 + '0';
+    *p = '\0';
+    return p;
+}
+
 void kmain() {
     clear_screen();
 
@@ -36,4 +51,11 @@ void kmain() {
     //init_keyboard();
     print("Welcome to YNOS!\n\nType HELP to view possible commands\n> ");
     start_shell();
+    //print("50");
+    int i = 50;
+    char buffer[100];
+    print("HERE");
+    tochar(i, buffer);
+    print(buffer);
+    print("THERE");
 }

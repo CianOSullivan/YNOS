@@ -43,6 +43,33 @@ void init_keyboard() {
    register_interrupt_handler(IRQ1, keyboard_callback);
 }
 
+void cowsay(char* inputArray) {
+    if (sizeof(inputArray) == 1) {
+        print("< moOh >\n");
+    } else {
+        for (int i = 1; i < sizeof(inputArray); i++) {
+            if (i == 1) {
+                print("/");
+                print(inputArray[i]);
+                print("\\\n");
+            }
+            else if (i == sizeof(inputArray) - 1) {
+                print("\\ ");
+                print(inputArray[i]);
+                print("/\n");
+            } else {
+                print("| ");
+                print(inputArray[i]);
+                print("|\n");
+            }
+        }
+    }
+    print("  \\ ^__^\n");
+    print("    (oo)\\_______\n");
+    print("    (__)\\       )\\/\\\n");
+    print("        ||----w |\n");
+    print("        ||     ||\n");
+}
 
 void start_shell() {
     /* Enable interruptions */
@@ -55,8 +82,9 @@ void start_shell() {
 
 void user_input(char *input) {
     char* inputArray[10];
-    argparse(input, inputArray);
+    int argc = argparse(input, inputArray);
 
+    print((char) argc);
     int c = 0;
     while (strcmp(inputArray[c], '\0') != 0) {
       print(inputArray[c++]);
@@ -72,7 +100,7 @@ void user_input(char *input) {
         print("    END or EXIT - Halt the CPU\n");
         print("    HELP - Display this help message\n");
         print("    PAGE - Allocate more memory to the running program\n\n");
-        print("");
+        print("    DECTOHEX - Convert the given number to hexadecimal");
     } else if (strcmp(inputArray[0], "PAGE") == 0) {
         u32 phys_addr;
         u32 page = kmalloc(1000, 1, &phys_addr);
@@ -100,11 +128,18 @@ void user_input(char *input) {
         }
     } else if (strcmp(inputArray[0], "HEX") == 0) {
         // run hex_to_ascii on first argument
+        char str[1];
+        hex_to_ascii(41, str);
+        print("ASCII: ");
+        char a = (int) str;
+        print(a);
+    } else if (strcmp(inputArray[0], "COW") == 0) {
+        //cowsay(inputArray);
     }
     print("> ");
 }
 
-void argparse(char *input, char* inputArray[]) {
+int argparse(char *input, char* inputArray[]) {
     // Parse arguments
     int i = 0;
     char* pch;
@@ -122,4 +157,5 @@ void argparse(char *input, char* inputArray[]) {
         pch = strtok(NULL, " ");
         inputArray[i++] = pch;
     }
+    return i;
 }

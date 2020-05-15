@@ -2,13 +2,11 @@
 #include "../drivers/screen.h"
 #include "../kernel/string.h"
 #include "isr.h"
-#include "../kernel/function.h"
 
 u32 tick = 0;
 
-static void timer_callback(registers_t regs) {
+static void timer_callback() {
     tick++;
-    UNUSED(regs);
 }
 
 void init_timer(u32 freq) {
@@ -24,4 +22,3 @@ void init_timer(u32 freq) {
     port_byte_out(0x40, low);
     port_byte_out(0x40, high);
 }
-

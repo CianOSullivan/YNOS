@@ -1,7 +1,4 @@
-#include "../drivers/screen.h"
-#include "string.h"
-#include "../cpu/isr.h"
-#include "../cpu/idt.h"
+#include "kernel.h"
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
 #error "You are not using a cross-compiler, this kernel requires a cross compiler"
@@ -12,7 +9,7 @@
 #error "This kernel needs to be compiled with a i686-elf compiler"
 #endif
 void some_function() {
-
+//Demonstrates
 }
 
 void kmain() {

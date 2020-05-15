@@ -1,8 +1,11 @@
 #ifndef SHELL_H
 #define SHELL_H
-#include "string.h"
-#include "../drivers/keyboard.h"
-#include "memory.h"
+#include "string.h" // Allows string manipulation
+#include "memory.h" // Allows malloc
+#include "../cpu/types.h"
+#include "../drivers/ports.h"
+#include "../cpu/isr.h"
+#include "../drivers/screen.h"
 
 /**
 Initialise the keyboard and CPU interrupts (allegedly)

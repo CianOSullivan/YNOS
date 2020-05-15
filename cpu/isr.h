@@ -7,7 +7,7 @@
 #include "../kernel/string.h"
 #include "../drivers/ports.h"
 #include "timer.h"
-#include "../drivers/keyboard.h"
+//#include "../drivers/keyboard.h"
 /* ISRs reserved for CPU exceptions */
 extern void isr0();
 extern void isr1();

@@ -6,15 +6,14 @@
 
 /**
 Initialise the keyboard and CPU interrupts (allegedly)
- */
-
+*/
 void start_shell();
 
 /**
 Parse user input and provide appropriate output
 
 @param input the command the user has input
- */
+*/
 void user_input(char *input);
 
 /**
@@ -24,7 +23,7 @@ Still need to implement flag support
 
 @param input the character pointer which has been input
 @param inputArray the character array which
- */
+*/
 void argparse(char *input, char* inputArray[]);
 
 #endif

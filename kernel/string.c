@@ -120,26 +120,11 @@ void hex_to_ascii(int n, char str[]) {
     else append(str, tmp + '0');
 }
 
-// returns true if X and Y are same
-int compare(char *X, char *Y)
-{
-	while (*X && *Y)
-	{
-		if (*X != *Y)
-			return 0;
-
-		X++;
-		Y++;
-	}
-
-	return (*Y == '\0');
-}
-
 char* strstr(char* X, char* Y)
 {
 	while (*X != '\0')
 	{
-		if ((*X == *Y) && compare(X, Y))
+		if ((*X == *Y) && (strcmp(X, Y) == 0))
 			return X;
 		X++;
 	}

@@ -1,11 +1,5 @@
 #include "shell.h"
 
-#define BACKSPACE 0x0E
-#define ENTER 0x1C
-
-static char key_buffer[256];
-
-#define SC_MAX 57
 const char *sc_name[] = { "ERROR", "Esc", "1", "2", "3", "4", "5", "6",
     "7", "8", "9", "0", "-", "=", "Backspace", "Tab", "Q", "W", "E",
         "R", "T", "Y", "U", "I", "O", "P", "[", "]", "Enter", "Lctrl",
@@ -43,32 +37,41 @@ void init_keyboard() {
    register_interrupt_handler(IRQ1, keyboard_callback);
 }
 
-void cowsay(char* inputArray) {
-    if (sizeof(inputArray) == 1) {
+void cowsay(char* inputArray[], int argc) {
+    if (argc == 1) {
         print("< moOh >\n");
     } else {
-        for (int i = 1; i < sizeof(inputArray); i++) {
+        //int c = 1;
+        //while (strcmp(inputArray[c], '\0') != 0) {
+        //    print(inputArray[c++]);
+        //    print("\n");
+        //}
+
+        for (int i = 1; i < argc; i++) {
             if (i == 1) {
                 print("/");
                 print(inputArray[i]);
                 print("\\\n");
             }
-            else if (i == sizeof(inputArray) - 1) {
+            else if (i == argc - 1) {
                 print("\\ ");
                 print(inputArray[i]);
                 print("/\n");
-            } else {
+            }
+            else {
                 print("| ");
                 print(inputArray[i]);
                 print("|\n");
             }
+
         }
     }
-    print("  \\ ^__^\n");
-    print("    (oo)\\_______\n");
-    print("    (__)\\       )\\/\\\n");
-    print("        ||----w |\n");
-    print("        ||     ||\n");
+    print("   \\\n");
+    print("     \\ ^__^\n");
+    print("       (oo)\\_______\n");
+    print("       (__)\\       )\\/\\\n");
+    print("           ||----w |\n");
+    print("           ||     ||\n");
 }
 
 void start_shell() {
@@ -84,12 +87,12 @@ void user_input(char *input) {
     char* inputArray[10];
     int argc = argparse(input, inputArray);
 
-    print((char) argc);
-    int c = 0;
-    while (strcmp(inputArray[c], '\0') != 0) {
-      print(inputArray[c++]);
-      print("\n");
-    }
+    //print_int("", argc);
+    //int c = 0;
+    //while (strcmp(inputArray[c], '\0') != 0) {
+    //  print(inputArray[c++]);
+    //  print("\n");
+    //}
 
     if (strcmp(inputArray[0], "END") == 0 || strcmp(input, "EXIT") == 0 ) {
         print("Stopping the CPU. Bye!\n");
@@ -97,10 +100,13 @@ void user_input(char *input) {
     } else if (strcmp(inputArray[0], "HELP") == 0) {
     	print("Command Help\n\n");
         print("The following commands can be run:\n\n");
+        print("    CLEAR - Clear the screen\n");
+        print("    COWSAY [MESSAGE] - Make a cow say a message\n");
         print("    END or EXIT - Halt the CPU\n");
         print("    HELP - Display this help message\n");
-        print("    PAGE - Allocate more memory to the running program\n\n");
-        print("    DECTOHEX - Convert the given number to hexadecimal");
+        print("    PAGE - Allocate more memory to the running program\n");
+        print("    DECTOHEX - Convert the given number to hexadecimal\n");
+        print("\n");
     } else if (strcmp(inputArray[0], "PAGE") == 0) {
         u32 phys_addr;
         u32 page = kmalloc(1000, 1, &phys_addr);
@@ -113,28 +119,17 @@ void user_input(char *input) {
         print(", physical address: ");
         print(phys_str);
         print("\n");
-    } else if (strcmp(inputArray[0], "SPLIT") == 0) {
-        char str[] ="This a sample string";
-        char* pch;
-        print("Splitting string ");
-        print(str);
-        print(" into tokens:\n");
-        pch = strtok(str," ");
-        while (pch != NULL)
-        {
-            print(pch);
-            print("\n");
-            pch = strtok(NULL, " ");
-        }
     } else if (strcmp(inputArray[0], "HEX") == 0) {
         // run hex_to_ascii on first argument
         char str[1];
         hex_to_ascii(41, str);
         print("ASCII: ");
         char a = (int) str;
-        print(a);
-    } else if (strcmp(inputArray[0], "COW") == 0) {
-        //cowsay(inputArray);
+        //print(a);
+    } else if (strcmp(inputArray[0], "COWSAY") == 0) {
+        cowsay(inputArray, argc);
+    } else if (strcmp(inputArray[0], "CLEAR") == 0) {
+        clear_screen();
     }
     print("> ");
 }
@@ -144,10 +139,11 @@ int argparse(char *input, char* inputArray[]) {
     int i = 0;
     char* pch;
     pch = strtok(input, " ");
-    inputArray[i++] = pch;
+    inputArray[i] = pch;
 
     while (pch != NULL)
     {
+        i++;
         // inputArray has a size of 10
         // Change this to accept more arguments?
         if (i > 9) {
@@ -155,7 +151,7 @@ int argparse(char *input, char* inputArray[]) {
             break;
         }
         pch = strtok(NULL, " ");
-        inputArray[i++] = pch;
+        inputArray[i] = pch;
     }
     return i;
 }

@@ -35,6 +35,25 @@ int print_char(char character, int col, int row, char attribute_byte) {
     return offset;
 }
 
+/**
+Convert integers to characters in order to print them
+ */
+char *tochar(int i, char *p)
+{
+    if (i / 10 == 0) {
+        // No more digits
+        *p++ = i + '0';
+        *p = '\0';
+        return p;
+    }
+
+    p = tochar(i / 10, p);
+    *p++ = i % 10 + '0';
+    *p = '\0';
+    return p;
+}
+
+
 /**********************************************************
  * Public Kernel API functions                            *
  **********************************************************/
@@ -44,7 +63,7 @@ int print_char(char character, int col, int row, char attribute_byte) {
  * If col, row, are negative, we will use the current offset
  */
 void print_at(char *message, int col, int row) {
-    // Set cursor if col/row are not negative 
+    // Set cursor if col/row are not negative
     int offset;
     if (col >= 0 && row >= 0)
         offset = get_offset(col, row);
@@ -65,6 +84,13 @@ void print_at(char *message, int col, int row) {
 
 void print(char *message) {
     print_at(message, -1, -1);
+}
+
+void print_int(char *message, int n) {
+    char buffer[100];
+    print_at(message, -1, -1);
+    tochar(n, buffer);
+    print_at(buffer, -1, -1);
 }
 
 void print_backspace() {
@@ -120,18 +146,18 @@ int handle_scrolling(int offset) {
         set_cursor(offset);
         return offset;
     }
-    
+
     /* Check if the offset is over screen size and scroll */
     if (offset >= MAX_ROWS * MAX_COLS * 2) {
         int i;
-        for (i = 1; i < MAX_ROWS; i++) 
+        for (i = 1; i < MAX_ROWS; i++)
             memory_copy((u8*)get_offset(0, i) + VIDEO_ADDRESS,
                         (u8*)get_offset(0, i-1) + VIDEO_ADDRESS,
                         MAX_COLS * 2);
 
         /* Blank last line */
         char *last_line = get_offset(0, MAX_ROWS-1) + (u8*) VIDEO_ADDRESS;
-        
+
         for (i = 0; i < MAX_COLS * 2; i++) last_line[i] = 0;
 
         offset -= 2 * MAX_COLS;

@@ -22,6 +22,7 @@ void print_at(char *message, int col, int row);
 int print_char(char c, int col, int row, char attr); // COMPLETE
 void set_cursor(int offset);
 void print_backspace();
+void print_int(char *message, int n);
 
 int get_offset_row(int offset);
 int get_offset_col(int offset);

@@ -130,6 +130,19 @@ void user_input(char *input) {
         cowsay(inputArray, argc);
     } else if (strcmp(inputArray[0], "CLEAR") == 0) {
         clear_screen();
+    } else if (strcmp(inputArray[0], "LOGIN") == 0) {
+        // Implement user logins
+    }  else if (strcmp(inputArray[0], "OPEN") == 0) {
+        //FILE *fileVar;
+        //open("test.txt");
+    } else {
+        print("Command not found: ");
+        int c = 0;
+        while (strcmp(inputArray[c], '\0') != 0) {
+            print(inputArray[c++]);
+            print(" ");
+        }
+        print("\n");
     }
     print("> ");
 }

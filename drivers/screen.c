@@ -9,6 +9,10 @@ int print_char(char character, int col, int row, char attribute_byte) {
         attribute_byte = WHITE_ON_BLACK;
     }
 
+    if (colour) {
+        attribute_byte = colour;
+    }
+
     int offset;
 
     if (col >= 0 && row >= 0) {

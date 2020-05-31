@@ -1,4 +1,5 @@
 #include "shell.h"
+int colour = 0x3e;
 
 const char *sc_name[] = { "ERROR", "Esc", "1", "2", "3", "4", "5", "6",
     "7", "8", "9", "0", "-", "=", "Backspace", "Tab", "Q", "W", "E",
@@ -102,6 +103,7 @@ void user_input(char *input) {
         print("The following commands can be run:\n\n");
         print("    CLEAR - Clear the screen\n");
         print("    COWSAY [MESSAGE] - Make a cow say a message\n");
+        print("    COLOUR [THEMENAME] - Change the colour scheme of the shell\n");
         print("    END or EXIT - Halt the CPU\n");
         print("    HELP - Display this help message\n");
         print("    PAGE - Allocate more memory to the running program\n");
@@ -132,9 +134,12 @@ void user_input(char *input) {
         clear_screen();
     } else if (strcmp(inputArray[0], "LOGIN") == 0) {
         // Implement user logins
-    }  else if (strcmp(inputArray[0], "OPEN") == 0) {
-        //FILE *fileVar;
-        //open("test.txt");
+    } else if (strcmp(inputArray[0], "OPEN") == 0) {
+        // Implement filesystem
+    } else if (strcmp(inputArray[0], "COLOUR") == 0) {
+        colour = 0x3e; // Change attribute byte
+        clear_screen();
+        print("Colour scheme changed\n");
     } else {
         print("Command not found: ");
         int c = 0;

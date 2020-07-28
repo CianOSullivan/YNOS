@@ -26,3 +26,7 @@ make
 ```
 
 And the OS should be running in a QEMU window!
+
+# Screenshots
+![Image of YNOS](img/default.png)
+![Image of Cowsay](img/cowsay.png)
